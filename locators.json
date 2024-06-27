@@ -1,0 +1,3 @@
+*** Keywords ***
+Click that button
+    Click Button    css:#locator-example > #Page-header-trending-zephr > div.Page-header-bar > div.Page-header-end > bsp-search-overlay > button
