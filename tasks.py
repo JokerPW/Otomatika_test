@@ -1,20 +1,30 @@
+from pathlib import Path
+import time
+
+from robocorp import workitems
+from robocorp.tasks import get_output_dir, task
+
 from RPA.Browser.Selenium import Selenium
+from RPA.Excel.Files import Files as Excel
+from RPA.Robocloud.Items import Items
+
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from SeleniumLibrary.errors import ElementNotFound
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from robocorp.tasks import get_output_dir, task
+
 from helpers.button_click_helper import click_button_by
-import time
+from model.news_model import NewsModel
+
 
 FILE_NAME = "otomatila.xlsx"
 NEWS_URL = "https://gothamist.com/"
 BROWSER = Selenium()
 NEWS_LIST = []
-#OUTPUT_DIR = Path(os.getenv("ROBOT_ARTIFACTS", "output"))
-SEARCH_WORDS = "germany"
+OUTPUT_DIR = get_output_dir() or Path("output")
+
 MONEY_WORDS = ["$", "dollar", "dollars", "USD"]
 
 POPUP_CLOSE_BTN = "Close"
@@ -32,6 +42,28 @@ NEWS_CLASS = 'v-card'
 NEWS_XPATH = '/html/body/div[1]/div/div/main/div[2]/div/section[2]/div/div[1]/div[2]/div[@]/div'
 CHAR_TO_REPLACE = "@"
 PICTURE_XPATH = '//*[@id="resultList"]/div[2]/div[1]/div/div[1]/figure[2]/div/div/a/div/img'
+
+
+def load_robocloud_parameters():
+    search_words = "test"
+    section = "test"
+    months = "0"
+    
+    try:
+        print ("Loading parameters")
+        items = Items()
+        items = items.get_work_item_payload()
+
+        search_words = items.get("search_phrase")
+        section = items.get("section")
+        months = items.get("months")
+    
+    except RuntimeError as re:
+        print("Unable to load parameters")
+        print (re)
+    
+    return search_words, section, months
+
 
 def retrieve_webpage(your_url):
     """Access website with the given URL and return its page"""
@@ -80,38 +112,73 @@ def check_for_money(search, title, description):
     return False
 
 
-def loop_through_news(news_class, news_xpath):
+def loop_through_news(search_words, news_class, news_xpath):
     # Wait until the search results are present
     wait = WebDriverWait(BROWSER.driver, 20)
     search_results = wait.until(EC.presence_of_element_located((By.CLASS_NAME, news_class)))
 
-    items = []
+    news_items = []
     iter = 1
 
     item = retrieve_news(news_xpath, CHAR_TO_REPLACE, str(iter))
     while item is not None:
-        items.append(item)
         iter = iter + 1
         item = retrieve_news(news_xpath, CHAR_TO_REPLACE, str(iter))
 
-    for item in items:
         try:
+            print("Iteration: " + str(iter))
             element = item.find_element(By.CLASS_NAME, 'h2')
             title = element.text
             element = item.find_element(By.CLASS_NAME, 'desc')
             description = element.text
             element = item.find_element(By.XPATH, PICTURE_XPATH)
             picture = element.get_attribute("src")
-            count = count_occurrences(SEARCH_WORDS, title, description)
+            count = count_occurrences(search_words, title, description)
             contains_money = check_for_money(MONEY_WORDS, title, description)
+            news_items.append(NewsModel(title, None, description, picture, count, contains_money))
+            print("-----------News-----------")
+            print("Title: " + title)
+            print("Description: " + description)
+            print("Picture: " + picture)
 
-        except:
+        except RuntimeError as re:
             print("element not found in this item.")
+            print (re)
+        except AttributeError as ae:
+            print("element not found in this item.")
+            print (ae)
+
+    return news_items
+
+
+def save_to_excel(news_list):
+    try:
+        print ("Saving to Excel file")
+        excel = Excel()
+        excel.create_workbook()
+        header = ["Title", "Date", "Description", "Picture", "Count", "Contains Money"]
+        excel.append_rows_to_worksheet([header], header=True)
+
+        for news in news_list:
+            row = [news.title, news.date, news.description, news.picture, news.count, news.contains_money]
+            excel.append_rows_to_worksheet([row], header=False)
+
+        excel.save_workbook("Otomatika.xlsx")
+        excel.close_workbook()
+    
+    except RuntimeError as re:
+        print ("Unable to write XLS")
+        print (re)
+    except TypeError as te:
+        print ("Unable to write XLS")
+        print (te)
 
 
 @task
 def minimal_task():
     """Code for Otomatika assignment test"""
+
+    search_words, section, months = load_robocloud_parameters()
 
     retrieve_webpage(NEWS_URL)
     time.sleep(2)
@@ -119,7 +186,7 @@ def minimal_task():
     time.sleep(2)
     open_search(SEARCH_BTN, SEARCH_BTN_TAG_TYPE)
     time.sleep(2)
-    search_given_words(INPUT_NAME, SEARCH_WORDS)
+    search_given_words(INPUT_NAME, search_words)
     time.sleep(20)
-    loop_through_news(NEWS_CLASS, NEWS_XPATH)
-
+    news_items = loop_through_news(search_words, NEWS_CLASS, NEWS_XPATH)
+    save_to_excel(news_items)
