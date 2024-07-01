@@ -1,5 +1,6 @@
 from pathlib import Path
 import time
+import logging
 
 from robocorp import workitems
 from robocorp.tasks import get_output_dir, task
@@ -19,6 +20,7 @@ from helpers.button_click_helper import click_button_by
 from model.news_model import NewsModel
 
 
+logger = logging.getLogger(__name__)
 FILE_NAME = "otomatila.xlsx"
 NEWS_URL = "https://gothamist.com/"
 BROWSER = Selenium()
@@ -59,22 +61,21 @@ def load_robocloud_parameters():
         months = items.get("months")
     
     except RuntimeError as re:
-        print("Unable to load parameters")
-        print (re)
+        logger.exception("Unable to load parameters")
+        logger.exception (re)
     
     return search_words, section, months
 
 
 def retrieve_webpage(your_url):
-    """Access website with the given URL and return its page"""
     BROWSER.open_available_browser(your_url)
 
 
-def close_popup(button_tag, tag_type):
+def close_popup(button_tag, tag_type, logger):
     click_button_by (BROWSER, tag_type, button_tag)
 
 
-def open_search(button_tag, tag_type):
+def open_search(button_tag, tag_type, logger):
     click_button_by (BROWSER, tag_type, button_tag)
 
 
@@ -89,7 +90,7 @@ def retrieve_news(full_xpath, char_to_replace, replacement_char):
     try:
         ret = BROWSER.find_element("xpath:" + xpath)
     except ElementNotFound:
-        print("element not found")
+        logger.exception("element not found")
     
     return ret
 
@@ -126,7 +127,6 @@ def loop_through_news(search_words, news_class, news_xpath):
         item = retrieve_news(news_xpath, CHAR_TO_REPLACE, str(iter))
 
         try:
-            print("Iteration: " + str(iter))
             element = item.find_element(By.CLASS_NAME, 'h2')
             title = element.text
             element = item.find_element(By.CLASS_NAME, 'desc')
@@ -136,17 +136,17 @@ def loop_through_news(search_words, news_class, news_xpath):
             count = count_occurrences(search_words, title, description)
             contains_money = check_for_money(MONEY_WORDS, title, description)
             news_items.append(NewsModel(title, None, description, picture, count, contains_money))
-            print("-----------News-----------")
-            print("Title: " + title)
-            print("Description: " + description)
-            print("Picture: " + picture)
+            logger.info("-----------News-----------")
+            logger.info("Title: " + title)
+            logger.info("Description: " + description)
+            logger.info("Picture: " + picture)
 
         except RuntimeError as re:
-            print("element not found in this item.")
-            print (re)
+            logger.exception("element not found in this item.")
+            logger.exception (re)
         except AttributeError as ae:
-            print("element not found in this item.")
-            print (ae)
+            logger.exception("element not found in this item.")
+            logger.exception (ae)
 
     return news_items
 
@@ -167,26 +167,30 @@ def save_to_excel(news_list):
         excel.close_workbook()
     
     except RuntimeError as re:
-        print ("Unable to write XLS")
-        print (re)
+        logger.exception ("Unable to write XLS")
+        logger.exception (re)
     except TypeError as te:
-        print ("Unable to write XLS")
-        print (te)
+        logger.exception ("Unable to write XLS")
+        logger.exception (te)
 
 
 @task
 def minimal_task():
     """Code for Otomatika assignment test"""
+    logging.basicConfig(filename='Otomatika.log', level=logging.INFO)
+    logger.info('Started')
 
     search_words, section, months = load_robocloud_parameters()
 
     retrieve_webpage(NEWS_URL)
     time.sleep(2)
-    close_popup(POPUP_CLOSE_BTN, POPUP_CLOSE_BTN_TAG_TYPE)
+    close_popup(POPUP_CLOSE_BTN, POPUP_CLOSE_BTN_TAG_TYPE, logger)
     time.sleep(2)
-    open_search(SEARCH_BTN, SEARCH_BTN_TAG_TYPE)
+    open_search(SEARCH_BTN, SEARCH_BTN_TAG_TYPE, logger)
     time.sleep(2)
     search_given_words(INPUT_NAME, search_words)
     time.sleep(20)
     news_items = loop_through_news(search_words, NEWS_CLASS, NEWS_XPATH)
     save_to_excel(news_items)
+
+    logger.info('Finished')
