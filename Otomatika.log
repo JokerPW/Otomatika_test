@@ -1,0 +1,117 @@
+INFO:tasks:Started
+WARNING:root:This is a deprecated import that will be removed in favor of RPA.Robocorp.WorkItems
+ERROR:tasks:Unable to load parameters
+Traceback (most recent call last):
+  File "c:\Users\joker\Dropbox\Prog\Python\Otomatika_test\tasks.py", line 57, in load_robocloud_parameters
+    items = items.get_work_item_payload()
+  File "C:\ProgramData\robocorp\ht\7da4fbf_b1f3c24_1c0bc041\lib\site-packages\RPA\Robocorp\WorkItems.py", line 1341, in get_work_item_payload
+    return self.current.payload
+  File "C:\ProgramData\robocorp\ht\7da4fbf_b1f3c24_1c0bc041\lib\site-packages\RPA\Robocorp\WorkItems.py", line 973, in current
+    raise RuntimeError("No active work item")
+RuntimeError: No active work item
+ERROR:tasks:No active work item
+Traceback (most recent call last):
+  File "c:\Users\joker\Dropbox\Prog\Python\Otomatika_test\tasks.py", line 57, in load_robocloud_parameters
+    items = items.get_work_item_payload()
+  File "C:\ProgramData\robocorp\ht\7da4fbf_b1f3c24_1c0bc041\lib\site-packages\RPA\Robocorp\WorkItems.py", line 1341, in get_work_item_payload
+    return self.current.payload
+  File "C:\ProgramData\robocorp\ht\7da4fbf_b1f3c24_1c0bc041\lib\site-packages\RPA\Robocorp\WorkItems.py", line 973, in current
+    raise RuntimeError("No active work item")
+RuntimeError: No active work item
+INFO:RPA.core.webdriver:Downloaded webdriver to: C:\Users\joker\AppData\Local\robocorp\webdrivers\.wdm\drivers\chromedriver\win64\126.0.6478.126\chromedriver-win32/chromedriver.exe
+INFO:RPA.Browser.Selenium:Webdriver version taken into use: ChromeDriver 126.0.6478.126 (d36ace6122e0a59570e258d82441395206d60e1c-refs/branch-heads/6478@{#1591})
+
+INFO:RobotFramework:Creating an instance of the Chrome WebDriver.
+INFO:RPA.Browser.Selenium:Created Chrome browser (version 126.0.6478) with arguments: --disable-dev-shm-usage --disable-web-security --allow-running-insecure-content --no-sandbox
+INFO:RobotFramework:<p>Attempted combinations:</p><div class="doc"><table><tr><th>Browser</th><th>Download</th><th>Error</th></tr><tr><td>Chrome</td><td>False</td><td>Message: Webdriver executable 'chromedriver' is not in PATH (with disabled Selenium Manager)
+</td></tr><tr><td>Chrome</td><td>True</td><td></td></tr></table></div>
+INFO:RobotFramework:Opening url 'https://gothamist.com/'
+INFO:RobotFramework:Clicking button 'css:button[title='Close']'.
+ERROR:tasks:Element not found
+Traceback (most recent call last):
+  File "c:\Users\joker\Dropbox\Prog\Python\Otomatika_test\helpers\button_click_helper.py", line 8, in click_button_by_title
+    browser.click_button("css:button[title='" + element_name + "']")
+  File "C:\ProgramData\robocorp\ht\7da4fbf_b1f3c24_1c0bc041\lib\site-packages\SeleniumLibrary\keywords\element.py", line 602, in click_button
+    element = self.find_element(locator, tag="button")
+  File "C:\ProgramData\robocorp\ht\7da4fbf_b1f3c24_1c0bc041\lib\site-packages\SeleniumLibrary\base\context.py", line 82, in find_element
+    return self.element_finder.find(locator, tag, True, required, parent)
+  File "C:\ProgramData\robocorp\ht\7da4fbf_b1f3c24_1c0bc041\lib\site-packages\SeleniumLibrary\locators\elementfinder.py", line 93, in find
+    return self._find(locators[-1], tag, first_only, required, element)
+  File "C:\ProgramData\robocorp\ht\7da4fbf_b1f3c24_1c0bc041\lib\site-packages\SeleniumLibrary\locators\elementfinder.py", line 125, in _find
+    raise ElementNotFound(f"{element_type} with locator '{locator}' not found.")
+SeleniumLibrary.errors.ElementNotFound: Button with locator 'css:button[title='Close']' not found.
+ERROR:tasks:Button with locator 'css:button[title='Close']' not found.
+Traceback (most recent call last):
+  File "c:\Users\joker\Dropbox\Prog\Python\Otomatika_test\helpers\button_click_helper.py", line 8, in click_button_by_title
+    browser.click_button("css:button[title='" + element_name + "']")
+  File "C:\ProgramData\robocorp\ht\7da4fbf_b1f3c24_1c0bc041\lib\site-packages\SeleniumLibrary\keywords\element.py", line 602, in click_button
+    element = self.find_element(locator, tag="button")
+  File "C:\ProgramData\robocorp\ht\7da4fbf_b1f3c24_1c0bc041\lib\site-packages\SeleniumLibrary\base\context.py", line 82, in find_element
+    return self.element_finder.find(locator, tag, True, required, parent)
+  File "C:\ProgramData\robocorp\ht\7da4fbf_b1f3c24_1c0bc041\lib\site-packages\SeleniumLibrary\locators\elementfinder.py", line 93, in find
+    return self._find(locators[-1], tag, first_only, required, element)
+  File "C:\ProgramData\robocorp\ht\7da4fbf_b1f3c24_1c0bc041\lib\site-packages\SeleniumLibrary\locators\elementfinder.py", line 125, in _find
+    raise ElementNotFound(f"{element_type} with locator '{locator}' not found.")
+SeleniumLibrary.errors.ElementNotFound: Button with locator 'css:button[title='Close']' not found.
+INFO:RobotFramework:Clicking button 'css:.-mr-2'.
+INFO:RobotFramework:Typing text 'test' into text field 'css:input[name='q']'.
+INFO:RobotFramework:Clicking button 'css:.search-page-button'.
+INFO:tasks:-----------News-----------
+INFO:tasks:Title: New rules are coming for PFAS in drinking water. See how your water tests.
+INFO:tasks:Description: A Gothamist analysis shows that the drinking water of 4.3 million New York and New Jersey residents has tested positive for so-called “forever chemicals.” See if you’re one of them.
+INFO:tasks:Picture: https://api-prod.gothamist.com/images/345911/fill-318x212%7Cformat-webp%7Cwebpquality-80/
+INFO:tasks:-----------News-----------
+INFO:tasks:Title: With Bowman’s loss to Latimer, the NY Democratic establishment strikes back
+INFO:tasks:Description: Westchester’s George Latimer secured a quick and decisive win over Rep. Jamaal Bowman Tuesday night. Here’s what the outcome tells us.
+INFO:tasks:Picture: https://api-prod.gothamist.com/images/345911/fill-318x212%7Cformat-webp%7Cwebpquality-80/
+INFO:tasks:-----------News-----------
+INFO:tasks:Title: Bowman loses to Latimer in NY Democratic primary shaped by Israel-Hamas war
+INFO:tasks:Description: The 16th Congressional District that spans from northern Bronx to Westchester now ranks as the most expensive House primary in American history.
+INFO:tasks:Picture: https://api-prod.gothamist.com/images/345911/fill-318x212%7Cformat-webp%7Cwebpquality-80/
+INFO:tasks:-----------News-----------
+INFO:tasks:Title: Admission for Black students at NYC’s specialized high schools ticks up slightly, but remains low
+INFO:tasks:Description: “Instead of pushing for systemwide change, this administration applauds a mere 1% increase in offers to Black and Latinx students,” one advocate says.
+INFO:tasks:Picture: https://api-prod.gothamist.com/images/345911/fill-318x212%7Cformat-webp%7Cwebpquality-80/
+INFO:tasks:-----------News-----------
+INFO:tasks:Title: NYPD inspector accused of sloppy coverup of DUI crash after boozy night at Midtown bar
+INFO:tasks:Description: Prosecutors said Deputy Inspector Paul Zangrilli scrambled to destroy evidence after he let his drunk girlfriend drive his unmarked police car.
+INFO:tasks:Picture: https://api-prod.gothamist.com/images/345911/fill-318x212%7Cformat-webp%7Cwebpquality-80/
+INFO:tasks:-----------News-----------
+INFO:tasks:Title: NYCHA’s not just a landlord. It's going to train young adults to work in construction.
+INFO:tasks:Description: The $1.3 million grant from the U.S. Labor Department will fund the workforce development program for 40 months.
+INFO:tasks:Picture: https://api-prod.gothamist.com/images/345911/fill-318x212%7Cformat-webp%7Cwebpquality-80/
+INFO:tasks:-----------News-----------
+INFO:tasks:Title: James Beard Foundation announces Best Chef in New York
+INFO:tasks:Description: New York was iced out of many major categories this year.
+INFO:tasks:Picture: https://api-prod.gothamist.com/images/345911/fill-318x212%7Cformat-webp%7Cwebpquality-80/
+INFO:tasks:-----------News-----------
+INFO:tasks:Title: NYC public schools will educate students and their families about safe gun storage
+INFO:tasks:Description: The announcement comes after a 14-year-old was accidentally shot and killed by his cousin, who was playing with a gun.
+INFO:tasks:Picture: https://api-prod.gothamist.com/images/345911/fill-318x212%7Cformat-webp%7Cwebpquality-80/
+INFO:tasks:-----------News-----------
+INFO:tasks:Title: How to start running in NYC: Fun routes, safety tips and where to get proper shoes
+INFO:tasks:Description: Go extremely slow, try to find a car-free area — even if it’s just a little park to run laps around — and don’t be afraid to dress like a highlighter.
+INFO:tasks:Picture: https://api-prod.gothamist.com/images/345911/fill-318x212%7Cformat-webp%7Cwebpquality-80/
+ERROR:tasks:element not found
+Traceback (most recent call last):
+  File "c:\Users\joker\Dropbox\Prog\Python\Otomatika_test\tasks.py", line 91, in retrieve_news
+    ret = BROWSER.find_element("xpath:" + xpath)
+  File "C:\ProgramData\robocorp\ht\7da4fbf_b1f3c24_1c0bc041\lib\site-packages\SeleniumLibrary\__init__.py", line 769, in find_element
+    return self._element_finder.find(locator, parent=parent)
+  File "C:\ProgramData\robocorp\ht\7da4fbf_b1f3c24_1c0bc041\lib\site-packages\SeleniumLibrary\locators\elementfinder.py", line 93, in find
+    return self._find(locators[-1], tag, first_only, required, element)
+  File "C:\ProgramData\robocorp\ht\7da4fbf_b1f3c24_1c0bc041\lib\site-packages\SeleniumLibrary\locators\elementfinder.py", line 125, in _find
+    raise ElementNotFound(f"{element_type} with locator '{locator}' not found.")
+SeleniumLibrary.errors.ElementNotFound: Element with locator 'xpath:/html/body/div[1]/div/div/main/div[2]/div/section[2]/div/div[1]/div[2]/div[11]/div' not found.
+ERROR:tasks:element not found in this item.
+Traceback (most recent call last):
+  File "c:\Users\joker\Dropbox\Prog\Python\Otomatika_test\tasks.py", line 130, in loop_through_news
+    element = item.find_element(By.CLASS_NAME, 'h2')
+AttributeError: 'NoneType' object has no attribute 'find_element'
+ERROR:tasks:'NoneType' object has no attribute 'find_element'
+Traceback (most recent call last):
+  File "c:\Users\joker\Dropbox\Prog\Python\Otomatika_test\tasks.py", line 130, in loop_through_news
+    element = item.find_element(By.CLASS_NAME, 'h2')
+AttributeError: 'NoneType' object has no attribute 'find_element'
+INFO:RPA.Excel.Files:Closing workbook: <RPA.Excel.Files.XlsxWorkbook object at 0x000001D79F8B0A90>
+INFO:tasks:Finished

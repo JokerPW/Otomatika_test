@@ -72,16 +72,16 @@ def retrieve_webpage(your_url):
 
 
 def close_popup(button_tag, tag_type, logger):
-    click_button_by (BROWSER, tag_type, button_tag)
+    click_button_by (BROWSER, tag_type, button_tag, logger)
 
 
 def open_search(button_tag, tag_type, logger):
-    click_button_by (BROWSER, tag_type, button_tag)
+    click_button_by (BROWSER, tag_type, button_tag, logger)
 
 
 def search_given_words(input_name, words):
     inputElement = BROWSER.input_text("css:input[name='" + input_name + "']", words)
-    click_button_by (BROWSER, GO_SEARCH_BTN_TAG_TYPE, GO_SEARCH)
+    click_button_by (BROWSER, GO_SEARCH_BTN_TAG_TYPE, GO_SEARCH, logger)
 
 
 def retrieve_news(full_xpath, char_to_replace, replacement_char):
